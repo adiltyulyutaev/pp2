@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace ConsoleApp5
 {
@@ -10,7 +11,10 @@ namespace ConsoleApp5
     {
         static void Main(string[] args)
         {
-            string s = Console.ReadLine();
+            StreamReader sr = new StreamReader("input.txt");
+            StreamWriter sw = new StreamWriter("output.txt");
+
+            string s = sr.ReadToEnd();
             int a = 1;
             int b = s.Length;
             for(int i=0; i<s.Length;i++)
@@ -23,13 +27,15 @@ namespace ConsoleApp5
             }
             if (a==1)
             {
-                Console.WriteLine("Yes");
+                sw.WriteLine("Yes");
             }
             else
             {
-                Console.WriteLine("No");
+                sw.WriteLine("No");
             }
-
+            sr.Close();
+            sw.Close();
+         
             Console.ReadKey();
         }
     }
