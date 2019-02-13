@@ -5,37 +5,32 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace ConsoleApp5
+namespace Task_1
 {
     class Program
     {
+        
         static void Main(string[] args)
         {
             StreamReader sr = new StreamReader("input.txt");
-            StreamWriter sw = new StreamWriter("output.txt");
-
             string s = sr.ReadToEnd();
-            int a = 1;
-            int b = s.Length;
-            for(int i=0; i<s.Length;i++)
+            char[] ch = s.ToArray();
+            Array.Reverse(ch);
+            string reverse = String.Empty;
+            for (int i=0;i<ch.Length;i++)
             {
-                if (s[i] != s[b - i-1])
-                {
-                    a++;
-                }
-                    
+                reverse += ch[i];
             }
-            if (a==1)
+            if(s!=reverse)
             {
-                sw.WriteLine("Yes");
+                Console.WriteLine("No");
+
             }
             else
             {
-                sw.WriteLine("No");
+                Console.WriteLine("Yes");
+
             }
-            sr.Close();
-            sw.Close();
-         
             Console.ReadKey();
         }
     }
