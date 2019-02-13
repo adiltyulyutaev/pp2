@@ -4,22 +4,38 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Task_2
+namespace Task2
 {
+    class Student
+    {
+        public string name; 
+        public string id;
+        public int year;
+        public Student()
+        {
+            name = Console.ReadLine();  
+            id = Console.ReadLine();
+            year = Convert.ToInt32(Console.ReadLine());
+        }
+        public Student(string name, string id, int year)
+        {
+            this.name = name;
+            this.id = id;
+            this.year = year;
+        }
+        public void info()
+        {
+            Console.WriteLine(name + " " + id + " " + (year + 1));
+        }
+    }
     class Program
     {
         static void Main(string[] args)
         {
-            int a = int.Parse(Console.ReadLine()); // размер масива 
-            int[] arr = new int[a]; 
-            string[] s = Console.ReadLine().Split(); // сохронил числа в виде стринга 
-            for (int i = 0; i < arr.Length; i++) // форик
-            {
-                arr[i] = int.Parse(s[i]); // придаю стригам значение числа 
-                Console.Write(arr[i] + " " + arr[i] + " ");// просто выписываю два подряд числа 
-
-            }
-            Console.ReadKey();
+            Student a = new Student();
+            a.info();
+            Student b = new Student("Tyulyutaev", "18bd", 2018);
+            b.info();
         }
     }
 }
