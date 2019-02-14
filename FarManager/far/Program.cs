@@ -52,34 +52,59 @@ namespace Far_Manager
 
             }
         }
-
         public void Show(string path)
         {
             DirectoryInfo directory = new DirectoryInfo(path);
-            FileSystemInfo[] FileSystemInfos = directory.GetFileSystemInfos();
+            DirectoryInfo[] dir = directory.GetDirectories();
+            FileInfo[] fil = directory.GetFiles();
+            List<FileSystemInfo> FileSystemInfos = new List<FileSystemInfo>();
+            //FileSystemInfo[] FileSystemInfos = directory.GetFileSystemInfos();
             int index = 0;
-            sz = FileSystemInfos.Length;
+            foreach (DirectoryInfo di in dir)
+            {
+                FileSystemInfos.Add(di);
+            }
+            foreach (FileSystemInfo fi in fil)
+            {
+                FileSystemInfos.Add(fi);
+            }
+            sz = FileSystemInfos.Count;
+
+            
             foreach (FileSystemInfo fs in FileSystemInfos)
             {
-
                 if (ok && fs.Name.StartsWith("."))
                 {
                     sz--;
                     continue;
                 }
                 this.Color(fs, index);
-                Console.WriteLine(fs.Name);
+                Console.WriteLine((index + 1) + ". " + fs.Name);
                 index++;
             }
         }
         public void Start(string path)
         {
-            DirectoryInfo directory = new DirectoryInfo(path);
-            FileSystemInfo[] FileSystemInfos = directory.GetFileSystemInfos();
             ConsoleKeyInfo consoleKey = Console.ReadKey();
             FileSystemInfo fs = null;
+
             while (true)
             {
+                DirectoryInfo directory = new DirectoryInfo(path);
+                DirectoryInfo[] dir = directory.GetDirectories();
+                FileInfo[] fil = directory.GetFiles();
+                List<FileSystemInfo> FileSystemInfos = new List<FileSystemInfo>();
+                //FileSystemInfo[] FileSystemInfos = directory.GetFileSystemInfos();
+                int index = 0;
+                foreach (DirectoryInfo di in dir)
+                {
+                    FileSystemInfos.Add(di);
+                }
+                foreach (FileSystemInfo fi in fil)
+                {
+                    FileSystemInfos.Add(fi);
+                }
+                
                 Console.BackgroundColor = ConsoleColor.Black;
                 Console.Clear();
                 Show(path);
@@ -98,48 +123,16 @@ namespace Far_Manager
                     ok = false;
                 if (consoleKey.Key == ConsoleKey.LeftArrow)
                     ok = true;
-                if (consoleKey.Key ==ConsoleKey.R)
+                if(consoleKey.Key == ConsoleKey.Enter)
                 {
                     int k = 0;
-                    for (int i = 0; i < directory.GetFileSystemInfos().Length; i++)
+                    for (int i = 0; i < FileSystemInfos.Count; i++)
                     {
-                        if (ok && directory.GetFileSystemInfos()[i].Name.StartsWith("."))
+                        if (ok && FileSystemInfos[i].Name.StartsWith("."))
                             continue;
                         if (cursor == k)
                         {
-                            fs = directory.GetFileSystemInfos()[i];
-                            break;
-                        }
-                        k++;
-                    }
-                    Console.Clear();
-                   
-                    Console.BackgroundColor = ConsoleColor.White;
-                    Console.ForegroundColor = ConsoleColor.Black;
-                    string s = Console.ReadLine();
-                    if (fs.GetType() == typeof(DirectoryInfo))
-                    {
-                        string full = fs.FullName;
-                        full = full.Remove(full.Length - fs.Name.Length);
-                        new DirectoryInfo(fs.FullName).MoveTo( full + s); 
-                        
-
-                    }
-                    else if (fs.GetType() == typeof(FileInfo))
-                    {
-                        new FileInfo(fs.FullName).MoveTo( fs.FullName+ s);
-                    }
-                }
-                if (consoleKey.Key == ConsoleKey.Enter)
-                {
-                    int k = 0;
-                    for (int i = 0; i < directory.GetFileSystemInfos().Length; i++)
-                    {
-                        if (ok && directory.GetFileSystemInfos()[i].Name.StartsWith("."))
-                            continue;
-                        if (cursor == k)
-                        {
-                            fs = directory.GetFileSystemInfos()[i];
+                            fs = FileSystemInfos[i];
                             break;
                         }
                         k++;
@@ -161,41 +154,79 @@ namespace Far_Manager
                         Console.ReadKey();
 
                     }
-
                 }
                 if (consoleKey.Key == ConsoleKey.Delete)
                 {
-                    int k = 0;
-                    for (int i = 0; i < directory.GetFileSystemInfos().Length; i++)
+                    //Console.Clear();
+                    //Console.WriteLine("Check");
+                    int kk = 0;
+                    for (int i = 0; i < FileSystemInfos.Count; i++)
                     {
-                        if (ok && directory.GetFileSystemInfos()[i].Name.StartsWith("."))
+                        if (ok && FileSystemInfos[i].Name.StartsWith("."))
                             continue;
-                        if (cursor == k)
+                        if (cursor == kk)
                         {
-                            fs = directory.GetFileSystemInfos()[i];
+                            fs = FileSystemInfos[i];
                             break;
                         }
-                        k++;
+                        kk++;
                     }
-                        if(fs.GetType()==typeof(DirectoryInfo))
+                    //Console.Clear();
+                    //Console.WriteLine(fs.FullName);
+
+                    if (fs.GetType() == typeof(DirectoryInfo))
                     {
                         (fs as DirectoryInfo).Delete(true);
                     }
-                        else if (fs.GetType()==typeof(FileInfo))
+                    else if (fs.GetType() == typeof(FileInfo))
                     {
                         (fs as FileInfo).Delete();
                     }
                 }
+                if(consoleKey.Key == ConsoleKey.F4)
+                {
+                    int kk = 0;
+                    for (int i = 0; i < FileSystemInfos.Count; i++)
+                    {
+                        if (ok && FileSystemInfos[i].Name.StartsWith("."))
+                            continue;
+                        if (cursor == kk)
+                        {
+                            fs = FileSystemInfos[i];
+                            break;
+                        }
+                        kk++;
+                    }
+                    Console.Clear();
+
+                    Console.BackgroundColor = ConsoleColor.White;
+                    Console.ForegroundColor = ConsoleColor.Black;
+                    string s = Console.ReadLine();
+                    if (fs.GetType() == typeof(DirectoryInfo))
+                    {
+                        string full = fs.FullName;
+                        full = full.Remove(full.Length - fs.Name.Length);
+                        new DirectoryInfo(fs.FullName).MoveTo(full + s);
+                    }
+                    else
+                    {
+                        string full = fs.FullName;
+                        full = full.Remove(full.Length - fs.Name.Length);
+                        new FileInfo(fs.FullName).MoveTo( full + s); 
+                    }
+                }
             }
         }
+            }
+
+    
         class Program
         {
             static void Main(string[] args)
             {
                 FarManager far = new FarManager();
                 far.Start("/Users/Пользователь/Desktop/pp2");
-                
+
             }
         }
-    }
 }
