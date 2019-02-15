@@ -15,7 +15,7 @@ namespace Task2
         {
             name = Console.ReadLine();  
             id = Console.ReadLine();
-            year = Convert.ToInt32(Console.ReadLine());
+            year =int.Parse(Console.ReadLine());
         }
         public Student(string name, string id, int year)
         {

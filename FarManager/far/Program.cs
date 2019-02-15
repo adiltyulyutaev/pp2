@@ -111,9 +111,16 @@ namespace Far_Manager
                 consoleKey = Console.ReadKey();
                 if (consoleKey.Key == ConsoleKey.Escape)
                 {
-                    cursor = 0;
-                    directory = directory.Parent;
-                    path = directory.FullName;
+                    try
+                    {
+                        cursor = 0;
+                        directory = directory.Parent;
+                        path = directory.FullName;
+                    }
+                    catch
+                    {
+                        continue;
+                    }
                 }
                 if (consoleKey.Key == ConsoleKey.UpArrow)
                     Up();
